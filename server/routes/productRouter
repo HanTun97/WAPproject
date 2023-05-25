@@ -1,0 +1,13 @@
+const express = require('express');
+const productController = require('../controllers/productController');
+
+const router = express.Router();
+
+router.get('/', productController.getAll);
+router.get('/:userId/cart/', productController.getAllCart);
+router.get('/:userId/cart/:productId', productController.getById);
+router.put('/:userId/cart/step-down/:productId', productController.editDown);
+router.put('/:userId/cart/step-up/:productId', productController.editUp);
+
+
+module.exports = router;
