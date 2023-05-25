@@ -1,0 +1,29 @@
+#loginInfo,#logoutBtn{
+    display: none;
+}
+
+#homeContent{
+    width: 30%;
+    padding-top: 10%;
+    margin: auto;
+}
+
+#productContent{
+    display: none;
+    width: 80%;
+    padding-top: 2%;
+    margin: auto;
+}
+
+.spacing{
+    width: 30px;
+}
+
+#logo{
+    width: 30%;
+    height: 30%;
+}
+
+.productImage{
+    width: 60px;
+}
