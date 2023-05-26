@@ -64,6 +64,7 @@ function fetchProduct() {
     while (list.hasChildNodes()) {
         list.removeChild(list.firstChild);
     }
+    console.log(`Bearer ${sessionStorage.getItem('accessToken')}`);
     fetch('http://localhost:3000/shopping/products', {
         headers: {
             Authorization: `Bearer ${sessionStorage.getItem('accessToken')}`

@@ -7,6 +7,17 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+
+const swaggerJsdoc = require("swagger-jsdoc")
+const swaggerUi = require("swagger-ui-express");
+const options = require('./swagger');
+const specs = swaggerJsdoc(options);
+app.use(
+  "/api-docs",
+  swaggerUi.serve,
+  swaggerUi.setup(specs)
+)
+
 app.use(express.static('public'));
 app.use('/public/img', express.static(__dirname + '/public/img'));
 
@@ -30,7 +41,7 @@ app.use((req, res, next)=>{
 })
 
 app.use((error, req, res, next)=>{
-    res.status(500).json({error: 'Invalid username and password!'});
+    res.status(500).json({error: error});
 })
 
 

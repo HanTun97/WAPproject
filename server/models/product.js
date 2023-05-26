@@ -36,9 +36,13 @@ module.exports = class Product {
     static edit(userId, productId, qty) {
         let pid = db.findIndex(prod => prod.id == productId);
         let cid = cart.findIndex(cart => cart.userId == userId & cart.productId == productId);
+        if (pid == -1 | cid == -1) {
+            return { "error": "Not Found in Your Cart" };
+        }
         let total = qty * db[pid].price;
         if (qty < 1) {
             cart.splice(cid, 1);
+            total = 0 * db[pid].price;
             return { "value": 0, "price": total };
         }
         if (db[pid].stock < qty) {
@@ -46,7 +50,7 @@ module.exports = class Product {
             return { "error": "Stock is limited", "value": cart[cid].qty, "price": total };
         }
         cart[cid].qty = qty;
-        return { "value": cart[cid].qty, "price": total};
+        return { "value": cart[cid].qty, "price": total };
     }
 
     static getAll() {
@@ -59,10 +63,10 @@ module.exports = class Product {
 
     static getById(userId, productId) {
         let pid = db.findIndex(prod => prod.id == productId);
-        if(pid == -1){
-            return { "error": "Product Not Found"};
-        }else if(db[pid].stock == 0){
-            return { "error": "Out of Stock"};   
+        if (pid == -1) {
+            return { "error": "Product Not Found" };
+        } else if (db[pid].stock == 0) {
+            return { "error": "Out of Stock" };
         }
         let cid = cart.findIndex(cart => cart.userId == userId & cart.productId == productId);
         if (cid == -1) {
@@ -81,19 +85,19 @@ module.exports = class Product {
     static placeOrder(userId, productId, qty) {
         let pid = db.findIndex(prod => prod.id == productId);
         let cid = cart.findIndex(cart => cart.userId == userId & cart.productId == productId);
-        if(pid != -1){
-            if(db[pid].stock < qty){
-                return { "unsucess": db[pid].name +" Out of Stock"};   
+        if (pid != -1) {
+            if (db[pid].stock < qty) {
+                return { "unsucess": db[pid].name + " Out of Stock" };
             }
             db[pid].stock -= qty;
-        }else{
-            return { "error": "Product Not Found"};   
+        } else {
+            return { "error": "Product Not Found" };
         }
-        if(cid != -1){
+        if (cid != -1) {
             cart.splice(cid, 1);
-        }else{
-            return { "error": "No Product in Cart"};
+        } else {
+            return { "error": "No Product in Cart" };
         }
-        return { "success": "Order Confirmed"};
+        return { "success": "Order Confirmed" };
     }
 }
