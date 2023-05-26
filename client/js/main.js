@@ -70,12 +70,8 @@ function fetchProduct() {
         }
     }).then(response => response.json())
         .then(data => {
-            if (data.error) {
-                document.getElementById('products').innerHTML = data.error;
-            } else {
-                for (let product of data)
-                    addRow(product.id, product.name, product.price, product.image, product.stock)
-            }
+            for (let product of data)
+                addRow(product.id, product.name, product.price, product.image, product.stock)
         });
 }
 
@@ -198,6 +194,8 @@ function addCart(id, name, price, qty, stock) {
     document.getElementById('tbodyShoppingCart').appendChild(row);
 }
 
+// User Add To Cart
+
 function addToCart(id) {
     document.getElementById('divNoCart').style.display = "none";
     document.getElementById('divShoppingCart').style.display = "block";
@@ -274,6 +272,8 @@ function addToCart(id) {
         });
 }
 
+// Order Quantity Changing
+
 function stepDown(pid) {
     let value = parseInt(document.getElementById('qty' + pid).value);
     stepChange(pid, value - 1);
@@ -314,6 +314,8 @@ function stepChange(pid, qty = null) {
         )
 }
 
+// Total Amount
+
 function getSubTotal() {
     const shopCart = document.querySelectorAll("#tbodyShoppingCart>tr>td:nth-child(4n)");
     let subtotal = 0;
@@ -322,6 +324,8 @@ function getSubTotal() {
     }
     document.getElementById('subtotal').innerHTML = subtotal.toFixed(2);
 }
+
+// Place Order
 
 document.getElementById('placeOrder').onclick = function () {
     const productIds = document.querySelectorAll("#tbodyShoppingCart>tr>td:nth-child(1)");
