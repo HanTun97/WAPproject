@@ -12,8 +12,6 @@ const router = express.Router();
  *       responses:
  *         "200":
  *           description: The list of all products
- *           contents:
- *             application/json:
  */
 
 router.get('/products', productController.getAll);
@@ -34,8 +32,6 @@ router.get('/products', productController.getAll);
  *       responses:
  *         "200":
  *           description: The list of all products from user's cart
- *           contents:
- *             application/json:
  */
 
 router.get('/users/:userId/cart', productController.getAllCart);
@@ -44,7 +40,7 @@ router.get('/users/:userId/cart', productController.getAllCart);
  * @swagger
  *   /shopping/users/{userId}/cart/products/{productId}:
  *     get:
- *       summary: Fetch User's Cart
+ *       summary: Fetch specific Product to add User's Cart
  *       tags: [Products]
  *       parameters:
  *         - in: path
@@ -62,8 +58,6 @@ router.get('/users/:userId/cart', productController.getAllCart);
  *       responses:
  *         "200":
  *           description: The list of specific products info from user's cart (for add to cart)
- *           contents:
- *             application/json:
  */
 
 router.get('/users/:userId/cart/products/:productId', productController.getById);
@@ -96,8 +90,8 @@ router.get('/users/:userId/cart/products/:productId', productController.getById)
  *       responses:
  *         "200":
  *           description: changed quantity and price info of specific products info from user's cart (order quantity changing)
- *           contents:
- *             application/json:
+ *         "404":
+ *           description: The specific Error message info for changed quantity
  */
 
 router.put('/users/:userId/cart/products/:productId/step-change/:qty', productController.edit);
@@ -130,8 +124,8 @@ router.put('/users/:userId/cart/products/:productId/step-change/:qty', productCo
  *       responses:
  *         "200":
  *           description: The specific message info for Place Order
- *           contents:
- *             application/json:
+ *         "400":
+ *           description: The specific Error message info for Place Order
  */
 
 router.put('/users/:userId/cart/products/:productId/placeOrder/:qty', productController.placeOrder);

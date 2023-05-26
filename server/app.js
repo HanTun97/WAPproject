@@ -41,7 +41,10 @@ app.use((req, res, next)=>{
 })
 
 app.use((error, req, res, next)=>{
-    res.status(500).json({error: error});
+    if(error)
+        res.status(500).json({error: "No Authorization"});
+    else
+        res.status(500).json({error: error});
 })
 
 

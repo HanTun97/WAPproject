@@ -34,11 +34,16 @@ const options = {
                     }
                 },
                 Produts: {
-                    parameters: {
-                        name: 'auth',
-                        in: 'header',
-                        required: true,
-                        type: 'string'
+                    type: 'object',
+                    required: ['Authorization'],
+                    properties: {
+                        Authorization: {
+                            type: 'string',
+                            description: 'User Authorization'
+                        }
+                    },
+                    example: {
+                        Authorization: 'Bearer 1-John-1685083667037'
                     }
                 }
             },

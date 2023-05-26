@@ -9,15 +9,28 @@ exports.getAllCart = (req, res, next) => {
 }
 
 exports.getById = (req, res, next) => {
-    res.status(200).json(Product.getById(req.params.userId, req.params.productId));
+    const getID = Product.getById(req.params.userId, req.params.productId);
+    if(getID.error){
+        res.status(404).json(getID);    
+    }else{
+        res.status(200).json(getID);
+    }
 }
 
 exports.edit = (req, res) => {
     const editedProd = Product.edit(req.params.userId, req.params.productId, req.params.qty);
-    res.status(200).json(editedProd);
+    if(editedProd.error){
+        res.status(404).json(editedProd);    
+    }else{
+        res.status(200).json(editedProd);
+    }
 }
 
 exports.placeOrder = (req, res) => {
     const editedProd = Product.placeOrder(req.params.userId, req.params.productId, req.params.qty);
-    res.status(200).json(editedProd);
+    if(editedProd.error){
+        res.status(400).json(editedProd);    
+    }else{
+        res.status(200).json(editedProd);
+    }
 }
