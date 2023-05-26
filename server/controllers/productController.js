@@ -12,12 +12,12 @@ exports.getById = (req, res, next) => {
     res.status(200).json(Product.getById(req.params.userId, req.params.productId));
 }
 
-exports.editDown = (req, res) => {
-    const editedProd = Product.editDown(req.params.userId, req.params.productId);
+exports.edit = (req, res) => {
+    const editedProd = Product.edit(req.params.userId, req.params.productId, req.params.qty);
     res.status(200).json(editedProd);
 }
 
-exports.editUp = (req, res) => {
-    const editedProd = Product.editUp(req.params.userId, req.params.productId);
+exports.placeOrder = (req, res) => {
+    const editedProd = Product.placeOrder(req.params.userId, req.params.productId, req.params.qty);
     res.status(200).json(editedProd);
 }

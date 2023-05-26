@@ -33,23 +33,20 @@ module.exports = class Product {
         this.stock = stock;
     }
 
-    static editDown(userId, productId) {
+    static edit(userId, productId, qty) {
         let pid = db.findIndex(prod => prod.id == productId);
         let cid = cart.findIndex(cart => cart.userId == userId & cart.productId == productId);
-        cart[cid].qty -= 1;
-        cart[cid].stock = db[pid].stock;
-        if (cart[cid].qty < 1) {
+        let total = qty * db[pid].price;
+        if (qty < 1) {
             cart.splice(cid, 1);
+            return { "value": 0, "price": total };
         }
-        return cart;
-    }
-
-    static editUp(userId, productId) {
-        let pid = db.findIndex(prod => prod.id == productId);
-        let cid = cart.findIndex(cart => cart.userId == userId & cart.productId == productId);
-        cart[cid].qty += 1;
-        cart[cid].stock = db[pid].stock;
-        return cart;
+        if (db[pid].stock < qty) {
+            total = cart[cid].qty * db[pid].price;
+            return { "error": "Stock is limited", "value": cart[cid].qty, "price": total };
+        }
+        cart[cid].qty = qty;
+        return { "value": cart[cid].qty, "price": total};
     }
 
     static getAll() {
@@ -62,6 +59,11 @@ module.exports = class Product {
 
     static getById(userId, productId) {
         let pid = db.findIndex(prod => prod.id == productId);
+        if(pid == -1){
+            return { "error": "Product Not Found"};
+        }else if(db[pid].stock == 0){
+            return { "error": "Out of Stock"};   
+        }
         let cid = cart.findIndex(cart => cart.userId == userId & cart.productId == productId);
         if (cid == -1) {
             cart.push({
@@ -74,5 +76,24 @@ module.exports = class Product {
             })
         }
         return db.filter(prod => prod.id == productId);
+    }
+
+    static placeOrder(userId, productId, qty) {
+        let pid = db.findIndex(prod => prod.id == productId);
+        let cid = cart.findIndex(cart => cart.userId == userId & cart.productId == productId);
+        if(pid != -1){
+            if(db[pid].stock < qty){
+                return { "unsucess": db[pid].name +" Out of Stock"};   
+            }
+            db[pid].stock -= qty;
+        }else{
+            return { "error": "Product Not Found"};   
+        }
+        if(cid != -1){
+            cart.splice(cid, 1);
+        }else{
+            return { "error": "No Product in Cart"};
+        }
+        return { "success": "Order Confirmed"};
     }
 }
